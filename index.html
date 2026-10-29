@@ -11,12 +11,15 @@
   <link rel="stylesheet" href="./archive.css">
   <link rel="stylesheet" href="./closing.css">
   <link rel="stylesheet" href="./navigation.css">
+  <link rel="stylesheet" href="./scanner.css">
   <script src="./scenes.js" defer></script>
   <script src="./game-data.js" defer></script>
   <script src="./api.js" defer></script>
   <script src="./app.js" defer></script>
   <script src="./refine.js" defer></script>
   <script src="./navigation.js" defer></script>
+  <script src="./vendor/jsQR.js" defer></script>
+  <script src="./scanner.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -30,6 +33,7 @@
       <a href="#locations" data-nav="locations">现场搜证</a>
       <a href="#archive" data-nav="archive">我的档案<span class="nav-count" id="archive-count">0</span></a>
     </nav>
+    <button class="scan-open-button" id="scan-open-button" type="button" data-open-scanner aria-haspopup="dialog">扫一扫</button>
     <button class="entry-menu-button" id="entry-menu-button" type="button" aria-label="打开本机试玩点位" aria-haspopup="dialog" hidden>试玩点位</button>
     <button class="profile-button" id="profile-button" type="button" aria-label="调查员设置"><span class="avatar" id="profile-avatar">调</span><span id="profile-name">调查员</span></button>
   </header>

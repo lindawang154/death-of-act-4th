@@ -33,13 +33,15 @@
   openLocation = function (id) {
     if (state.progress.locations.includes(id)) { go('scene/' + id); return; }
     const item = locationById(id);
-    dialogShell(item.name, item.club, `<p>到${esc(item.club)}摊位扫码，登记纸档并开启现场。</p><div class="dialog-actions"><button class="button secondary" id="locked-close" type="button">知道了</button></div>`);
+    dialogShell(item.name, item.club, `<p>到${esc(item.club)}摊位阅读纸档，点击“扫一扫”对准纸面二维码，直接收录档案并开启现场。</p><div class="dialog-actions"><button class="button" type="button" data-open-scanner>扫一扫收录纸档</button><button class="button secondary" id="locked-close" type="button">稍后再去</button></div>`);
     document.getElementById('locked-close').onclick = () => dialog.close();
   };
   renderHome = function () {
     const identity = identityById(state.profile.identity);
     const status = state.profile.closed ? '已结案' : state.progress.locations.length ? '调查中' : '待启程';
     main.innerHTML = `<div class="lobby-shell"><section class="lobby-hero"><div class="lobby-copy"><div class="eyebrow">社团文化节 · 微型 ARG</div><h1><span>第四幕的</span><span>休止符</span></h1><p>首演中止，调查继续。</p></div><img class="lobby-orbit" src="./assets/orbit.svg" alt="" aria-hidden="true"></section><div class="lobby-progress"><span class="lobby-state">${status}</span><span>纸档 <b>${paperCount()}</b><small>/ 4</small></span><span>物证 <b>${visualCount()}</b><small>/ 8</small></span>${identity ? `<button class="text-button lobby-identity" id="lobby-identity" type="button">${esc(identity.name)} ↗</button>` : ''}</div><nav class="lobby-actions" aria-label="调查入口"><a class="lobby-action" href="#locations"><span class="lobby-action-mark" aria-hidden="true">⌖</span><span><strong>现场搜证</strong><small>${state.progress.locations.length} / 4 处地点</small></span><span class="lobby-action-arrow" aria-hidden="true">↗</span></a><a class="lobby-action" href="#archive"><span class="lobby-action-mark" aria-hidden="true">▤</span><span><strong>我的档案</strong><small>纸档与物证</small></span><span class="lobby-action-arrow" aria-hidden="true">↗</span></a><button class="lobby-action" id="lobby-information" type="button"><span class="lobby-action-mark" aria-hidden="true">◌</span><span><strong>案情与人物</strong><small>调查之前</small></span><span class="lobby-action-arrow" aria-hidden="true">↗</span></button><a class="lobby-action" href="#report"><span class="lobby-action-mark" aria-hidden="true">✧</span><span><strong>${state.profile.closed ? '查看结案' : '结案推理'}</strong><small>${state.profile.closed ? '事实解析' : '点选完成'}</small></span><span class="lobby-action-arrow" aria-hidden="true">↗</span></a></nav></div>`;
+    const scanAction = main.querySelector('.lobby-actions > a[href="#locations"]');
+    if (scanAction) scanAction.outerHTML = '<button class="lobby-action" type="button" data-open-scanner><span class="lobby-action-mark" aria-hidden="true">⌗</span><span><strong>扫一扫收档</strong><small>对准纸质档案二维码</small></span><span class="lobby-action-arrow" aria-hidden="true">↗</span></button>';
     document.getElementById('lobby-information').onclick = () => showLobbyInformation('case');
     document.getElementById('lobby-identity')?.addEventListener('click', () => showIdentity(state.profile.identity, false));
   };
@@ -73,11 +75,11 @@
     return previousRenderCurrent(scroll);
   };
   showOpening = function () {
-    dialogShell('第四幕的休止符', '案情', `<p>《笼中鸟》首演当晚，林知夏在第四幕遭遇威亚装置失效，抢救无效死亡。最初的说明将其归为设备老化。</p><p>一张后台照片、一份改过的流程单，让这个结论有了疑点。</p><div class="small-rule"></div><p>纸档在摊位阅读，物证在线搜索。请始终在同一浏览器内打开各摊位二维码：手机相机与微信可能分别使用不同浏览器，切换后进度不会自动同步。</p><p class="fine-print">本案及人物均为虚构。</p><div class="dialog-actions"><button class="button" id="opening-start" type="button">开始调查 ↗</button></div>`);
+    dialogShell('第四幕的休止符', '案情', `<p>《笼中鸟》首演当晚，林知夏在第四幕遭遇威亚装置失效，抢救无效死亡。最初的说明将其归为设备老化。</p><p>一张后台照片、一份改过的流程单，让这个结论有了疑点。</p><div class="small-rule"></div><p>纸档在摊位阅读，物证在线搜索。点击网页内“扫一扫”，扫描纸质档案上的二维码，索引会直接加入当前调查。</p><p class="fine-print">本案及人物均为虚构。</p><div class="dialog-actions"><button class="button" id="opening-start" type="button">开始调查 ↗</button></div>`);
     document.getElementById('opening-start').onclick = () => { dialog.close(); go('locations'); };
   };
   renderLocations = function () {
-    main.innerHTML = `<div class="page">${pageTitle('四个社团', '现场搜证', '纸档在摊位阅读，物证在场景中发现。', '<a class="text-button" href="#archive">我的档案 ↗</a>')}<p class="browser-notice">请用同一浏览器打开每个点位。相机扫码与微信可能使用不同浏览器；切换后进度不会自动同步。</p><div class="location-grid full-locations">${state.catalog.locations.map(item => locationCard(item)).join('')}</div></div>`;
+    main.innerHTML = `<div class="page">${pageTitle('四个社团', '现场搜证', '纸档在摊位阅读，物证在场景中发现。', '<a class="text-button" href="#archive">我的档案 ↗</a>')}<div class="scan-booth-notice"><p>在摊位阅读纸档，再点击“扫一扫”扫描纸面二维码；收录后继续在当前网页调查。</p><button class="scan-open-button" type="button" data-open-scanner>扫一扫收录纸档</button></div><div class="location-grid full-locations">${state.catalog.locations.map(item => locationCard(item)).join('')}</div></div>`;
     bindLocationCards();
   };
   renderScene = async function (id, version) {
@@ -89,7 +91,7 @@
     if (data.progress) state.progress = data.progress;
     const objects = (window.ARGScenes?.hotspots?.[id] || []).filter(object => object.id !== 'debate-draft');
     main.innerHTML = `<div class="page"><div class="crumb"><a href="#locations">现场搜证</a><span>/</span><span>${esc(item.club)}</span></div>${pageTitle(item.club, item.name, '', '<a class="text-button" href="#archive">我的档案 ↗</a>')}<div class="scene-layout"><section class="scene-frame" aria-label="可交互现场"><div class="scene-toolbar"><span>现场物证</span><span>${objects.filter(object => hasEvidence(object.id)).length} / 2</span><button class="text-button" id="scene-zoom" type="button">放大 ⊕</button></div><div class="scene-container" id="scene-container">${window.ARGScenes?.render(id, state.progress.evidence) || ''}</div><div class="scene-caption"><span>拖动查看 · 点击物品检查</span></div></section><aside class="scene-side"><h2>可检查的物品</h2><div class="object-list">${objects.map(object => `<button class="object-button" data-inspect="${esc(object.id)}" type="button"><span class="object-symbol" aria-hidden="true">${hasEvidence(object.id) ? '✓' : '+'}</span><strong>${esc(object.label)}</strong><span class="object-state">${hasEvidence(object.id) ? '已收录' : '↗'}</span></button>`).join('')}${id === 'theatre' && hasEvidence('debate-draft') ? '<button class="object-button" data-inspect="debate-draft" type="button"><strong>抽屉里的旧稿</strong><span class="object-state">已收录</span></button>' : ''}</div></aside></div><section><div class="section-head"><h2>现场纸档</h2><span class="read-at-booth">正文见摊位纸档</span></div><div class="paper-dossier-list">${data.documents.map(paperCard).join('')}</div></section><div class="section-head"><a class="text-button" href="#locations">下一个地点 ↗</a><span class="fine-print">带着新发现，继续下一处调查。</span></div></div>`;
-    main.querySelector('.scene-layout')?.insertAdjacentHTML('beforebegin', '<p class="browser-notice">请始终用同一浏览器打开各摊位二维码。相机和微信可能打开不同浏览器，切换后进度不会自动同步。</p>');
+    main.querySelector('.scene-layout')?.insertAdjacentHTML('beforebegin', '<div class="scan-booth-notice"><p>本社团纸档已收录。前往下一处摊位后，可继续在这里扫一扫。</p><button class="scan-open-button" type="button" data-open-scanner>扫一扫收录下一份</button></div>');
     main.querySelectorAll('[data-inspect]').forEach(button => button.onclick = () => inspectEvidence(button.dataset.inspect));
     main.querySelectorAll('[data-evidence]').forEach(object => {
       object.onclick = () => inspectEvidence(object.dataset.evidence);
@@ -142,6 +144,7 @@
     });
     document.getElementById('archive-search').oninput = event => { state.search = event.target.value; renderEvidenceGrid(); };
     renderEvidenceGrid();
+    main.querySelector('.page-title')?.insertAdjacentHTML('beforeend', '<button class="scan-open-button" type="button" data-open-scanner>扫一扫收录纸档</button>');
   };
   renderEvidenceGrid = function () {
     const grid = document.getElementById('evidence-grid');
@@ -152,7 +155,7 @@
     const summary = document.getElementById('archive-result-summary');
     if (summary) summary.textContent = `${state.archiveFilter === 'all' ? '全部社团' : locationById(state.archiveFilter)?.club || ''} · ${kind === 'document' ? '纸档索引' : '物证照片'} · ${filtered.length} 项${query ? '匹配结果' : '已归档'}`;
     if (!filtered.length) {
-      grid.innerHTML = emptyState(query ? '没有找到匹配材料' : kind === 'document' ? '此处还没有纸档索引' : '此处还没有物证照片', query ? '试试人物姓名、档案编号，或笔记里的关键词。' : kind === 'document' ? '到社团摊位阅读文书，再扫码登记。' : '进入已解锁的现场，检查物品并收录照片。', query ? '<button class="button secondary" id="archive-clear-search" type="button">清除搜索</button>' : '<a class="button secondary" href="#locations">前往现场 ↗</a>');
+      grid.innerHTML = emptyState(query ? '没有找到匹配材料' : kind === 'document' ? '此处还没有纸档索引' : '此处还没有物证照片', query ? '试试人物姓名、档案编号，或笔记里的关键词。' : kind === 'document' ? '到社团摊位阅读文书，再点击网页内“扫一扫”收录纸档。' : '进入已解锁的现场，检查物品并收录照片。', query ? '<button class="button secondary" id="archive-clear-search" type="button">清除搜索</button>' : '<a class="button secondary" href="#locations">前往现场 ↗</a>');
       document.getElementById('archive-clear-search')?.addEventListener('click', () => { state.search = ''; document.getElementById('archive-search').value = ''; renderEvidenceGrid(); document.getElementById('archive-search').focus(); });
       return;
     }
@@ -183,7 +186,7 @@
       const missingLocations = inference.missing_locations || [];
       const missingEvidence = inference.missing_evidence || [];
       const groups = state.catalog.locations.filter(item => missingLocations.includes(item.id) || missingEvidence.some(evidence => evidence.location_id === item.id));
-      main.innerHTML = `<div class="page closing-page">${pageTitle('结案之前', '把缺少的记录补齐', '登记四份现场纸档，并收录关键图片物证后，即可开始结案。')}<div class="closing-readiness"><span>现场纸档 <b>${paperCount()}<small> / 4</small></b></span><span>图片物证 <b>${visualCount()}<small> / 8</small></b></span><p>下方只列结案必需的项目；补充物证与隐藏发现不影响通关。</p></div><section class="closing-missing-grid" aria-label="待补齐的记录">${groups.map(item => { const locked = missingLocations.includes(item.id); const evidence = missingEvidence.filter(entry => entry.location_id === item.id); return `<article class="closing-missing-card"><div class="closing-missing-head"><h2>${esc(item.club)}</h2><span>${locked ? '尚未登记' : '继续收录'}</span></div><ul>${locked ? '<li>到摊位阅读纸档，并用当前浏览器扫码登记。</li>' : ''}${evidence.map(entry => `<li>检查并收录：${esc(entry.title)}</li>`).join('')}</ul><a class="text-button" href="${locked ? '#locations' : '#scene/' + encodeURIComponent(item.id)}">${locked ? '查看点位位置' : '返回场景检查'} ↗</a></article>`; }).join('')}</section><a class="button secondary" href="#locations">继续现场搜证 ↗</a></div>`;
+      main.innerHTML = `<div class="page closing-page">${pageTitle('结案之前', '把缺少的记录补齐', '登记四份现场纸档，并收录关键图片物证后，即可开始结案。')}<div class="closing-readiness"><span>现场纸档 <b>${paperCount()}<small> / 4</small></b></span><span>图片物证 <b>${visualCount()}<small> / 8</small></b></span><p>下方只列结案必需的项目；补充物证与隐藏发现不影响通关。</p></div><section class="closing-missing-grid" aria-label="待补齐的记录">${groups.map(item => { const locked = missingLocations.includes(item.id); const evidence = missingEvidence.filter(entry => entry.location_id === item.id); return `<article class="closing-missing-card"><div class="closing-missing-head"><h2>${esc(item.club)}</h2><span>${locked ? '尚未登记' : '继续收录'}</span></div><ul>${locked ? '<li>到摊位阅读纸档，点击网页内“扫一扫”收录。</li>' : ''}${evidence.map(entry => `<li>检查并收录：${esc(entry.title)}</li>`).join('')}</ul><a class="text-button" href="${locked ? '#locations' : '#scene/' + encodeURIComponent(item.id)}">${locked ? '查看点位位置' : '返回场景检查'} ↗</a></article>`; }).join('')}</section><a class="button secondary" href="#locations">继续现场搜证 ↗</a></div>`;
       return;
     }
     const questions = [...inference.questions, inference.responsibility];

@@ -1,0 +1,43 @@
+.scan-open-button { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; min-height: 40px; padding: 7px 12px; border: 1px solid #aaa; border-radius: 3px; background: #e5e5df; color: #111; font: inherit; font-size: 12px; white-space: nowrap; cursor: pointer; }
+.scan-open-button:hover { background: #fff; }
+.scan-dialog { width: min(480px, calc(100% - 28px)); max-height: calc(100dvh - 32px); margin: auto; padding: 25px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid #505050; border-radius: 8px; background: #141414; color: #eee; }
+.scan-dialog::backdrop { background: rgb(0 0 0 / .85); }
+.scan-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.scan-heading h2 { margin: 9px 0 0; color: #eee; font: 400 25px/1.4 var(--serif, serif); }
+.scan-close { flex-shrink: 0; width: 40px; height: 40px; border: 1px solid #454545; border-radius: 50%; background: none; color: #ccc; font-size: 23px; cursor: pointer; }
+.scan-intro, .scan-status { font-size: 13px; line-height: 1.8; }
+.scan-intro { margin: 16px 0; color: #aaa; }
+.scan-camera { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid #444; border-radius: 4px; background: #080808; }
+.scan-camera video { display: block; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+.scan-camera-active .scan-camera video { opacity: 1; }
+.scan-target { position: absolute; inset: 15% 22%; border: 1px solid #bdbdb3; border-radius: 8px; pointer-events: none; }
+.scan-camera-caption { position: absolute; bottom: 12px; right: 0; left: 0; text-align: center; font-size: 11px; color: #eee; text-shadow: 0 1px 4px #000; pointer-events: none; }
+.scan-status { min-height: 46px; margin: 13px 0; color: #b9cbb9; overflow-wrap: anywhere; }
+.scan-status.scan-error { color: #e7b9a6; }
+.scan-options { display: flex; flex-wrap: wrap; gap: 10px; }
+.scan-options .button { min-height: 44px; flex: 1; padding: 10px; font-size: 12px; text-align: center; white-space: nowrap; }
+.scan-photo-button { position: relative; cursor: pointer; overflow: hidden; }
+.scan-photo-button:focus-within { outline: 2px solid #ddd; outline-offset: 3px; }
+.scan-photo-button input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.scan-manual { margin-top: 20px; padding-top: 16px; border-top: 1px solid #333; }
+.scan-manual summary { color: #bbb; cursor: pointer; font-size: 12px; line-height: 1.8; }
+.scan-manual form { display: flex; gap: 10px; margin-top: 14px; }
+.scan-manual input { flex: 1; min-width: 0; font-size: 14px; }
+.scan-manual .button { flex-shrink: 0; min-height: 44px; padding: 10px 16px; }
+.scan-footnote { margin: 18px 0 0; color: #999; font-size: 11px; line-height: 1.8; }
+.scan-booth-notice { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 25px; padding: 16px 18px; border: 1px solid #454545; background: #141414; }
+.scan-booth-notice p { flex: 1; min-width: 170px; margin: 0; color: #aaa; font-size: 12px; line-height: 1.8; }
+.scan-page-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+@media (max-width: 650px) {
+  .site-header { gap: 8px; }
+  .site-header .scan-open-button { margin-left: auto; padding: 6px 9px; font-size: 11px; }
+  .site-header .entry-menu-button { margin-left: 0; padding: 5px 6px; font-size: 10px; }
+  .site-header .profile-button, .local-preview .site-header .profile-button { margin-left: 0; }
+  .site-header .profile-button > span:last-child { display: none; }
+  .scan-dialog { padding: 20px; }
+  .scan-heading h2 { font-size: 22px; }
+}
+@media (max-width: 430px) {
+  .local-preview .site-header .entry-menu-button { display: none; }
+  .scan-dialog { padding: 16px; }
+}
