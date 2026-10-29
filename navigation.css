@@ -1,0 +1,22 @@
+.entry-menu-button { flex-shrink: 0; min-width: 44px; min-height: 36px; padding: 6px 11px; border: 1px solid #535353; border-radius: 3px; background: #161616; color: #dedede; font-size: 11px; }
+.entry-menu-button:hover { background: #242424; border-color: #aaa; }
+.entry-menu-section { margin-top: 26px; }
+.entry-menu-section h3 { margin: 0 0 9px; color: #ddd; font: 400 19px/1.6 var(--serif); }
+.entry-menu-section > p { color: #999; font-size: 12px; line-height: 1.9; }
+.entry-menu-points { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 15px; }
+.entry-menu-point { display: grid; gap: 6px; padding: 17px; border: 1px solid #464646; border-radius: 3px; background: #111; }
+.entry-menu-point strong { color: #e3e3e3; font-size: 14px; font-weight: 400; }
+.entry-menu-point span { color: #999; font-size: 11px; }
+.entry-menu-point:hover { border-color: #aaa; background: #1b1b1b; }
+.entry-page-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+@media (max-width: 650px) {
+  .site-header .profile-button { margin-left: auto; }
+  .local-preview .site-header .profile-button { margin-left: 0; }
+  .entry-menu-button { margin-left: auto; min-height: 40px; padding: 5px 9px; }
+  .entry-menu-point { padding: 15px 12px; }
+  .entry-menu-section > p { font-size: 11px; }
+  .entry-page-nav { gap: 10px; }
+}
+@media (max-width: 430px) {
+  .site-header .profile-button > span:last-child { display: none; }
+}

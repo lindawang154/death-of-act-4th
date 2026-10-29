@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="第四幕的休止符，一场跨社团的微型调查游戏。寻找物证，建立证据链，给出你的判断。">
+  <title>第四幕的休止符 · 特别调查处</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./archive.css">
+  <link rel="stylesheet" href="./closing.css">
+  <link rel="stylesheet" href="./navigation.css">
+  <script src="./scenes.js" defer></script>
+  <script src="./game-data.js" defer></script>
+  <script src="./api.js" defer></script>
+  <script src="./app.js" defer></script>
+  <script src="./refine.js" defer></script>
+  <script src="./navigation.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="特别调查处首页">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span>特别调查处<small>林学院辩论队 · 社团文化节</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="主导航">
+      <a href="#home" data-nav="home">调查</a>
+      <a href="#locations" data-nav="locations">现场搜证</a>
+      <a href="#archive" data-nav="archive">我的档案<span class="nav-count" id="archive-count">0</span></a>
+    </nav>
+    <button class="entry-menu-button" id="entry-menu-button" type="button" aria-label="打开本机试玩点位" aria-haspopup="dialog" hidden>试玩点位</button>
+    <button class="profile-button" id="profile-button" type="button" aria-label="调查员设置"><span class="avatar" id="profile-avatar">调</span><span id="profile-name">调查员</span></button>
+  </header>
+  <main id="main" tabindex="-1"><div class="loading-state"><span class="loader"></span><p>正在打开调查档案…</p></div></main>
+  <footer class="site-footer"><span>山东农业大学林学院辩论队</span><span id="storage-status">进度保存在当前浏览器 · 虚构案件</span></footer>
+  <nav class="mobile-nav" aria-label="手机导航">
+    <a href="#home" data-nav="home"><span aria-hidden="true">⌂</span>大厅</a>
+    <a href="#locations" data-nav="locations"><span aria-hidden="true">⌖</span>勘查</a>
+    <a href="#archive" data-nav="archive"><span aria-hidden="true">▤</span>档案</a>
+  </nav>
+  <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
